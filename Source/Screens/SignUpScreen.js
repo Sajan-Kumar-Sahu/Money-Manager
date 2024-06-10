@@ -5,6 +5,7 @@ import {
   StatusBar,
   TextInput,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState} from 'react';
 import {styles} from '../Styles/Styles.js';
@@ -22,7 +23,7 @@ const SignUpScreen = () => {
   const navigation = useNavigation();
 
   const handleSignUp = async (email, password) => {
-    if (email && password && (password==confirmPassword)) {
+    if (email && password && password == confirmPassword) {
       try {
         const response = await auth().createUserWithEmailAndPassword(
           email,
@@ -47,168 +48,174 @@ const SignUpScreen = () => {
         await auth().signOut();
         Alert.alert(
           'Verification Request',
-          'A link has been sent to your email. Kindly verify your email by clicking the link.'
+          'A link has been sent to your email. Kindly verify your email by clicking the link.',
         );
         navigation.dispatch(StackActions.replace('SignIn'));
       } catch (error) {
-        console.errpr(error);
+        console.error(error);
       }
     } else {
       Alert.alert('Invalid input', 'Kindly fill all the details correctly.');
     }
   };
   return (
-    <View style={styles.signinContainer}>
-      <StatusBar hidden={false} />
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: 'bold',
-          fontSize: 30,
-          marginBottom: 50,
-          textAlign: 'center',
-        }}>
-        Sign Up
-      </Text>
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: 'bold',
-          fontSize: 16,
-        }}>
-        Full Name
-      </Text>
-      <TextInput
-        style={styles.textField}
-        placeholder="Enter Your Full Name"
-        placeholderTextColor={'black'}
-        value={name}
-        onChangeText={text => setName(text)}
-      />
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: 'bold',
-          fontSize: 16,
-          marginTop: 20,
-        }}>
-        Email Address
-      </Text>
-      <TextInput
-        style={styles.textField}
-        placeholder="Enter Your Email Address"
-        placeholderTextColor={'black'}
-        value={email}
-        onChangeText={text => setEmail(text)}
-      />
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: 'bold',
-          fontSize: 16,
-          marginTop: 20,
-        }}>
-        Password
-      </Text>
-      <TextInput
-        style={styles.textField}
-        placeholder="Enter Your Password"
-        placeholderTextColor={'black'}
-        secureTextEntry={true}
-        value={password}
-        onChangeText={text => setPassword(text)}
-      />
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: 'bold',
-          fontSize: 16,
-          marginTop: 20,
-        }}>
-        Confirm Password
-      </Text>
-      <TextInput
-        style={styles.textField}
-        placeholder="Enter Password Again"
-        placeholderTextColor={'black'}
-        secureTextEntry={true}
-        value={confirmPassword}
-        onChangeText={text => setConfirmPassword(text)}
-      />
-      {password !== confirmPassword ? (
-        <Text style={{color: 'red', fontSize: 15, fontWeight: 'bold'}}>
-          Password does not match
-        </Text>
-      ) : null}
-      <TouchableOpacity
-        style={styles.btnCmp}
-        onPress={() => handleSignUp(email, password)}>
-        <Text
+    <SafeAreaView style={{flex: 1, backgroundColor: '#071611'}}>
+      <StatusBar barStyle="light-content" backgroundColor="#071611" />
+      <View style={styles.Container}>
+        <Text //Sign Up text
           style={{
-            color: 'white',
+            color: '#DFFF70',
             fontWeight: 'bold',
-            fontSize: 25,
+            fontSize: 50,
+            marginBottom: 50,
             textAlign: 'center',
           }}>
           Sign Up
         </Text>
-      </TouchableOpacity>
-      <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-        <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
-        <View>
+
+        <TextInput //Input Field (Name)
+          style={styles.textField}
+          placeholder="Name"
+          placeholderTextColor={'grey'}
+          value={name}
+          onChangeText={text => setName(text)}
+        />
+        <TextInput //Input Field (Email)
+          style={styles.textField}
+          placeholder="Email"
+          placeholderTextColor={'grey'}
+          value={email}
+          onChangeText={text => setEmail(text)}
+        />
+        <TextInput //Input Field (Password)
+          style={styles.textField}
+          placeholder="Password"
+          placeholderTextColor={'grey'}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={text => setPassword(text)}
+        />
+        <TextInput //Input Field (Confirm Passwod)
+          style={styles.textField}
+          placeholder="Confirm Password"
+          placeholderTextColor={'grey'}
+          secureTextEntry={true}
+          value={confirmPassword}
+          onChangeText={text => setConfirmPassword(text)}
+        />
+
+        {password !== confirmPassword ? ( //password verification
           <Text
             style={{
-              width: 50,
-              textAlign: 'center',
-              color: 'grey',
-              fontSize: 16,
+              color: '#DFFF70',
+              fontSize: 15,
               fontWeight: 'bold',
+              marginStart: 8,
+              marginTop: 5,
             }}>
-            Or
+            Password does not match
           </Text>
+        ) : null}
+
+        <TouchableOpacity //Sign up Button
+          style={styles.btnCmp}
+          onPress={() => handleSignUp(email, password)}>
+          <Text
+            style={{
+              color: '#2A3934',
+              fontWeight: 'bold',
+              fontSize: 25,
+              textAlign: 'center',
+            }}>
+            Sign Up
+          </Text>
+        </TouchableOpacity>
+
+        <View //Separator
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <View style={{flex: 1, height: 1, backgroundColor: '#DFFF70'}} />
+          <View>
+            <Text
+              style={{
+                width: 50,
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              Or
+            </Text>
+          </View>
+
+          <View style={{flex: 1, height: 1, backgroundColor: '#DFFF70'}} />
         </View>
 
-        <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
-      </View>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          marginHorizontal: 120,
-          marginTop: 20,
-        }}>
-        <TouchableOpacity>
-          <Icons name="google" size={30} color={'red'} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icons name="facebook" size={30} color={'#3b5998'} />
-        </TouchableOpacity>
-      </View>
-
-      <View
-        style={{flexDirection: 'row', justifyContent: 'center', marginTop: 30}}>
-        <Text
+        <View //Other Sign in options
           style={{
-            color: 'black',
-            fontWeight: 'bold',
-            fontSize: 16,
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            marginHorizontal: 120,
+            marginTop: 20,
           }}>
-          Already have an account ?
-        </Text>
-        <TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 25,
+                backgroundColor: '#2A3934',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icons name="google" size={30} color={'white'} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 25,
+                backgroundColor: '#2A3934',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icons name="facebook-f" size={30} color={'white'} />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <View //Already have an account
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 30,
+          }}>
           <Text
             style={{
-              color: 'blue',
+              color: 'white',
               fontWeight: 'bold',
-              fontSize: 16,
-              marginStart: 3,
+              fontSize: 18,
             }}>
-            Sign in
+            Already have an account?
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.dispatch(StackActions.replace('SignIn'));
+            }}>
+            <Text
+              style={{
+                color: '#DFFF70',
+                fontWeight: 'bold',
+                fontSize: 18,
+                marginStart: 3,
+              }}>
+              Sign in
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

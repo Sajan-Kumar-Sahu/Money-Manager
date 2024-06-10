@@ -5,6 +5,7 @@ import {
   StatusBar,
   TextInput,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState} from 'react';
 import {styles} from '../Styles/Styles.js';
@@ -19,6 +20,7 @@ const SignInScreen = () => {
   navigation = useNavigation();
 
   const handleLogin = async (email, password) => {
+    
     try {
       if (email && password) {
         const isLogin = await auth().signInWithEmailAndPassword(
@@ -30,7 +32,7 @@ const SignInScreen = () => {
         setPassword('');
 
         if (isLogin.user.emailVerified) {
-          navigation.dispatch(StackActions.replace('Home'));
+          navigation.dispatch(StackActions.replace('TabNav'));
         } else {
           Alert.alert(
             'Verification Required',
@@ -64,126 +66,139 @@ const SignInScreen = () => {
     }
   };
   return (
-    <View style={styles.signinContainer}>
-      <StatusBar hidden={false} />
-
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: 'bold',
-          fontSize: 30,
-        }}>
-        Hello
-      </Text>
-      <Text
-        style={{
-          color: '#fb8500',
-          fontWeight: 'bold',
-          fontSize: 50,
-          marginBottom: 70,
-        }}>
-        Welcome !
-      </Text>
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: 'bold',
-          fontSize: 16,
-        }}>
-        Email Address
-      </Text>
-      <TextInput
-        style={styles.textField}
-        value={email}
-        onChangeText={text => setEmail(text)}
-      />
-      <Text
-        style={{
-          color: 'black',
-          fontWeight: 'bold',
-          fontSize: 16,
-          marginTop: 20,
-        }}>
-        Password
-      </Text>
-      <TextInput
-        style={styles.textField}
-        value={password}
-        onChangeText={text => setPassword(text)}
-        secureTextEntry={true}
-      />
-      <TouchableOpacity
-        style={styles.btnCmp}
-        onPress={() => handleLogin(email, password)}>
-        <Text
+    <SafeAreaView style={{flex: 1, backgroundColor: '#071611'}}>
+      <StatusBar barStyle="light-content" backgroundColor="#071611" />
+      <View style={styles.Container}>
+        <Text //Hello
           style={{
             color: 'white',
             fontWeight: 'bold',
             fontSize: 30,
-            textAlign: 'center',
           }}>
-          Sign in
+          Hello,
         </Text>
-      </TouchableOpacity>
-      <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
-        <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
-        <View>
+        <Text //Welcome
+          style={{
+            color: '#DFFF70',
+            fontWeight: 'bold',
+            fontSize: 50,
+            marginBottom: 70,
+          }}>
+          Welcome !
+        </Text>
+        <TextInput //Input Field (Email)
+          style={styles.textField}
+          value={email}
+          onChangeText={text => setEmail(text)}
+          placeholder="Email"
+          placeholderTextColor={'grey'}
+        />
+        <TextInput //Input Field (Password)
+          style={styles.textField}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          placeholder="Password"
+          placeholderTextColor={'grey'}
+          secureTextEntry={true}
+        />
+        <TouchableOpacity //Sign In Button
+          style={styles.btnCmp}
+          onPress={() => handleLogin(email, password)}>
           <Text
             style={{
-              width: 50,
-              textAlign: 'center',
-              color: 'grey',
-              fontSize: 16,
+              color: 'black',
               fontWeight: 'bold',
+              fontSize: 30,
+              textAlign: 'center',
             }}>
-            Or
+            Sign in
           </Text>
+        </TouchableOpacity>
+        <View //Separator
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <View style={{flex: 1, height: 1, backgroundColor: '#DFFF70'}} />
+          <View>
+            <Text
+              style={{
+                width: 50,
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              Or
+            </Text>
+          </View>
+
+          <View style={{flex: 1, height: 1, backgroundColor: '#DFFF70'}} />
         </View>
 
-        <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
-      </View>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          marginHorizontal: 120,
-          marginTop: 20,
-        }}>
-        <TouchableOpacity>
-          <Icons name="google" size={30} color={'red'} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icons name="facebook" size={30} color={'#3b5998'} />
-        </TouchableOpacity>
-      </View>
-
-      <View
-        style={{flexDirection: 'row', justifyContent: 'center', marginTop: 30}}>
-        <Text
+        <View //Other Sign in options
           style={{
-            color: 'black',
-            fontWeight: 'bold',
-            fontSize: 16,
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            marginHorizontal: 120,
+            marginTop: 20,
           }}>
-          Don't have an account yet?
-        </Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('SignUp');
+          <TouchableOpacity>
+            <View
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 25,
+                backgroundColor: '#2A3934',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icons name="google" size={30} color={'white'} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 25,
+                backgroundColor: '#2A3934',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icons name="facebook-f" size={30} color={'white'} />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <View //Don't have an account
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 30,
           }}>
           <Text
             style={{
-              color: 'blue',
+              color: 'white',
               fontWeight: 'bold',
-              fontSize: 16,
-              marginStart: 3,
+              fontSize: 18,
             }}>
-            Sign up
+            Don't have an account yet?
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('SignUp');
+            }}>
+            <Text
+              style={{
+                color: '#DFFF70',
+                fontWeight: 'bold',
+                fontSize: 18,
+                marginStart: 3,
+              }}>
+              Sign up
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

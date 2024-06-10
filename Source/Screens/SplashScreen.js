@@ -3,16 +3,15 @@ import React, {useEffect} from 'react';
 import {StackActions, useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
+
 const splashImage = require('../Styles/SplashScreen.png');
 export default function SplashScreen() {
   const navigation = useNavigation();
   useEffect(() => {
     setTimeout(async () => {
       const unSubscribe = await auth().onAuthStateChanged(user => {
-        const routeName = user !== null ? 'Home' : 'SignIn';
-
-        navigation.dispatch(StackActions.replace(routeName));
-        unSubscribe();
+        const routeName = user !== null ? 'TabNav' : 'SignIn';
+        navigation.dispatch(StackActions.replace(routeName)); 
       });
     }, 2000);
   }, []);
