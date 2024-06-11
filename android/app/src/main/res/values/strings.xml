@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Money_Manager</string>
+    
+    <string name="facebook_app_id">1732155310855785</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">046cfce32dfe0a51de9dc1b2095ea0ee</string>
+
+
 </resources>

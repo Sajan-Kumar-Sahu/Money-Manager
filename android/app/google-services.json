@@ -12,7 +12,20 @@
           "package_name": "com.money_manager"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "653548888636-keq6ckrp2v44pu2ghfvfsgj8dinqa288.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.money_manager",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "653548888636-8up7mguandr0oai1q249g38er4nqc5vb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDVqp4SM0I0B3tK0oKWOl5Chtj3oqIVr_Q"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653548888636-8up7mguandr0oai1q249g38er4nqc5vb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

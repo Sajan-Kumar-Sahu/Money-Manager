@@ -6,6 +6,7 @@ import {
   TextInput,
   Alert,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import {styles} from '../Styles/Styles.js';
@@ -19,17 +20,17 @@ const SignUpScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
-
   const handleSignUp = async (email, password) => {
     if (email && password && password == confirmPassword) {
+      setLoading(true);
       try {
         const response = await auth().createUserWithEmailAndPassword(
           email,
           password,
         );
-
         const userData = {
           name: name,
           email: email,
@@ -43,6 +44,7 @@ const SignUpScreen = () => {
         setName('');
         setEmail('');
         setPassword('');
+        setConfirmPassword('');
 
         await auth().currentUser.sendEmailVerification();
         await auth().signOut();
@@ -53,6 +55,8 @@ const SignUpScreen = () => {
         navigation.dispatch(StackActions.replace('SignIn'));
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     } else {
       Alert.alert('Invalid input', 'Kindly fill all the details correctly.');
@@ -117,19 +121,23 @@ const SignUpScreen = () => {
           </Text>
         ) : null}
 
-        <TouchableOpacity //Sign up Button
-          style={styles.btnCmp}
-          onPress={() => handleSignUp(email, password)}>
-          <Text
-            style={{
-              color: '#2A3934',
-              fontWeight: 'bold',
-              fontSize: 25,
-              textAlign: 'center',
-            }}>
-            Sign Up
-          </Text>
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size="large" color="#DFFF70" />
+        ) : (
+          <TouchableOpacity //Sign up Button
+            style={styles.btnCmp}
+            onPress={() => handleSignUp(email, password)}>
+            <Text
+              style={{
+                color: '#2A3934',
+                fontWeight: 'bold',
+                fontSize: 25,
+                textAlign: 'center',
+              }}>
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+        )}
 
         <View //Separator
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>

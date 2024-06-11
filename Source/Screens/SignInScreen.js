@@ -6,21 +6,50 @@ import {
   TextInput,
   Alert,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from '../Styles/Styles.js';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import auth from '@react-native-firebase/auth';
 import {StackActions, useNavigation} from '@react-navigation/native';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   navigation = useNavigation();
 
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '653548888636-8up7mguandr0oai1q249g38er4nqc5vb.apps.googleusercontent.com',
+    });
+  }, []);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+
+      const {idToken} = await GoogleSignin.signIn();
+
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleFacebookSignIn = async () => {}
+
   const handleLogin = async (email, password) => {
-    
+    setLoading(true);
     try {
       if (email && password) {
         const isLogin = await auth().signInWithEmailAndPassword(
@@ -63,6 +92,8 @@ const SignInScreen = () => {
       );
       setEmail('');
       setPassword('');
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -101,19 +132,24 @@ const SignInScreen = () => {
           placeholderTextColor={'grey'}
           secureTextEntry={true}
         />
-        <TouchableOpacity //Sign In Button
-          style={styles.btnCmp}
-          onPress={() => handleLogin(email, password)}>
-          <Text
-            style={{
-              color: 'black',
-              fontWeight: 'bold',
-              fontSize: 30,
-              textAlign: 'center',
-            }}>
-            Sign in
-          </Text>
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size="large" color="#DFFF70" />
+        ) : (
+          <TouchableOpacity //Sign In Button
+            style={styles.btnCmp}
+            onPress={() => handleLogin(email, password)}>
+            <Text
+              style={{
+                color: 'black',
+                fontWeight: 'bold',
+                fontSize: 30,
+                textAlign: 'center',
+              }}>
+              Sign in
+            </Text>
+          </TouchableOpacity>
+        )}
+
         <View //Separator
           style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
           <View style={{flex: 1, height: 1, backgroundColor: '#DFFF70'}} />
@@ -140,7 +176,7 @@ const SignInScreen = () => {
             marginHorizontal: 120,
             marginTop: 20,
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleGoogleSignIn()}>
             <View
               style={{
                 height: 50,
@@ -153,7 +189,7 @@ const SignInScreen = () => {
               <Icons name="google" size={30} color={'white'} />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleFacebookSignIn()}>
             <View
               style={{
                 height: 50,

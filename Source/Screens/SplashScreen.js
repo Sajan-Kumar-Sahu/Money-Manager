@@ -11,6 +11,7 @@ export default function SplashScreen() {
     setTimeout(async () => {
       const unSubscribe = await auth().onAuthStateChanged(user => {
         const routeName = user !== null ? 'TabNav' : 'SignIn';
+        unSubscribe
         navigation.dispatch(StackActions.replace(routeName)); 
       });
     }, 2000);
